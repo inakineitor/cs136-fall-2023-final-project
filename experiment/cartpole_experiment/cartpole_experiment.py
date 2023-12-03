@@ -82,13 +82,14 @@ policy_net = DQN(n_observations, n_actions).to(device)
 target_net = DQN(n_observations, n_actions).to(device)
 target_net.load_state_dict(policy_net.state_dict())
 
+# AdamW optimizer is used for training.
 optimizer = optim.AdamW(policy_net.parameters(), lr=LR, amsgrad=True)
 memory = ReplayMemory(10000)
 
 
 steps_done = 0
 
-
+# Chooses an action based on epsilon-greedy policy.
 def select_action(state):
     global steps_done
     sample = random.random()
@@ -110,7 +111,7 @@ def select_action(state):
 
 episode_durations = []
 
-
+# Plots the duration of each episode during training.
 def plot_durations(show_result=False):
     plt.figure(1)
     durations_t = torch.tensor(episode_durations, dtype=torch.float)
@@ -136,7 +137,7 @@ def plot_durations(show_result=False):
         else:
             display.display(plt.gcf())
 
-
+# Performs a single optimization step on the Q-network.
 def optimize_model():
     if len(memory) < BATCH_SIZE:
         return
@@ -187,7 +188,7 @@ def optimize_model():
     torch.nn.utils.clip_grad_value_(policy_net.parameters(), 100)
     optimizer.step()
 
-
+# The main training loop runs for a specified number of episodes.
 if torch.cuda.is_available():
     num_episodes = 600
 else:

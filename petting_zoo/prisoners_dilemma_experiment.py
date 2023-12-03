@@ -1,8 +1,6 @@
-import rps_environment
+import prisoners_dilemma_environment
 
-# from petting_zoo.rps_policies import AlwaysSameHeuristic
-
-env = rps_environment.parallel_env(render_mode="human")
+env = prisoners_dilemma_environment.parallel_env(render_mode="human")
 observations, infos = env.reset()
 round = 0 
 
@@ -15,6 +13,6 @@ while env.agents:
     actions = {agent: env.action_space(agent).sample() for agent in env.agents}
 
     observations, rewards, terminations, truncations, infos = env.step(actions)
-    print("iteration " + str(round) + ": " + str(actions))
+    # print("iteration " + str(round) + ": " + str(actions))
     round += 1
 env.close()
